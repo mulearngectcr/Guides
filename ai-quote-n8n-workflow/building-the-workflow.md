@@ -72,7 +72,7 @@ Recommended Configuration:
 
 ```text
 Provider: OpenAI
-Model: gpt-4.1-mini
+Model: gpt-4.1-nano
 Credential: n8n free OpenAI API credits
 ```
 
