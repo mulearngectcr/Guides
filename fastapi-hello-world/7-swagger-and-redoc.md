@@ -1,0 +1,780 @@
+# 07 - Exploring Swagger UI & ReDoc
+
+> Day 1 – Environment Setup & Your First API Endpoint
+
+---
+
+# Introduction
+
+One of FastAPI's most powerful features is that it automatically generates professional API documentation.
+
+In many frameworks, developers have to write documentation manually.
+
+FastAPI does this for you.
+
+The moment you create an API endpoint, FastAPI generates:
+
+```text
+/docs
+```
+
+and
+
+```text
+/redoc
+```
+
+These pages allow developers to:
+
+- View all available endpoints
+- Read endpoint descriptions
+- See request formats
+- Understand response structures
+- Test APIs directly from the browser
+
+This saves a huge amount of development time.
+
+---
+
+# The Problem Before Automatic Documentation
+
+Imagine building a large application with hundreds of API endpoints.
+
+Without documentation, another developer might ask:
+
+```text
+How do I create a user?
+
+What data should I send?
+
+What does the response look like?
+
+Which parameters are required?
+
+What happens if something fails?
+```
+
+Developers would have to:
+
+- Read source code
+- Ask teammates
+- Write separate documentation files
+- Use external tools
+
+This quickly becomes difficult to maintain.
+
+---
+
+# FastAPI's Solution
+
+FastAPI automatically creates interactive documentation pages.
+
+If your server is running:
+
+```bash
+uvicorn main:app --reload
+```
+
+you can visit:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+and
+
+```text
+http://127.0.0.1:8000/redoc
+```
+
+without writing any additional code.
+
+---
+
+# What Is Swagger UI?
+
+Swagger UI is an interactive API documentation tool.
+
+FastAPI automatically uses Swagger UI to create the:
+
+```text
+/docs
+```
+
+page.
+
+---
+
+# What Does Swagger UI Look Like?
+
+Suppose you have:
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "Hello World"
+    }
+```
+
+Visiting:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+might show:
+
+```text
+GET /
+
+Responses:
+200 Successful Response
+
+Try it out
+```
+
+Everything is generated automatically.
+
+---
+
+# Why Is Swagger UI Useful?
+
+Swagger UI provides several advantages.
+
+---
+
+## Interactive Testing
+
+You can test APIs directly from your browser.
+
+No need for:
+
+- Postman
+- Thunder Client
+- cURL commands
+
+---
+
+## Automatic Documentation
+
+The documentation always stays synchronized with your code.
+
+If you add a new endpoint:
+
+```python
+@app.get("/about")
+```
+
+it instantly appears in:
+
+```text
+/docs
+```
+
+---
+
+## Better Team Collaboration
+
+Frontend developers can understand backend APIs without reading Python code.
+
+---
+
+## Easier Debugging
+
+You can quickly test endpoints and verify responses.
+
+---
+
+# Understanding "Try It Out"
+
+One of Swagger UI's best features is:
+
+```text
+Try it out
+```
+
+---
+
+# Example
+
+Suppose your API contains:
+
+```python
+@app.get("/greet/{name}")
+def greet(name: str):
+    return {
+        "message": f"Hello {name}"
+    }
+```
+
+Swagger UI will display:
+
+```text
+GET /greet/{name}
+```
+
+along with a:
+
+```text
+Try it out
+```
+
+button.
+
+---
+
+# Testing an Endpoint
+
+Click:
+
+```text
+Try it out
+```
+
+Enter:
+
+```text
+John
+```
+
+Press:
+
+```text
+Execute
+```
+
+Swagger automatically sends:
+
+```http
+GET /greet/John
+```
+
+and displays:
+
+```json
+{
+  "message": "Hello John"
+}
+```
+
+This makes experimentation extremely easy.
+
+---
+
+# Viewing Responses
+
+Swagger shows several things:
+
+---
+
+## Request URL
+
+Example:
+
+```text
+http://127.0.0.1:8000/greet/John
+```
+
+---
+
+## Response Body
+
+Example:
+
+```json
+{
+  "message": "Hello John"
+}
+```
+
+---
+
+## Response Status
+
+Example:
+
+```text
+200 OK
+```
+
+---
+
+## Response Headers
+
+Technical information about the HTTP response.
+
+These become important in advanced applications.
+
+---
+
+# What Is OpenAPI?
+
+FastAPI's documentation system is built upon a standard called:
+
+> OpenAPI
+
+---
+
+# Understanding OpenAPI
+
+OpenAPI is a specification for describing REST APIs.
+
+It defines:
+
+- Endpoints
+- Parameters
+- Request bodies
+- Response formats
+- Authentication methods
+
+in a machine-readable format.
+
+---
+
+# Why Does OpenAPI Matter?
+
+Because every tool understands the same standard.
+
+Examples:
+
+- Swagger UI
+- ReDoc
+- Postman
+- API generators
+- Client SDK generators
+
+can all work with OpenAPI specifications.
+
+---
+
+# FastAPI Automatically Generates OpenAPI
+
+When your application starts, FastAPI creates:
+
+```text
+/openapi.json
+```
+
+This file contains the complete description of your API.
+
+---
+
+# Example
+
+Suppose you have:
+
+```python
+@app.get("/")
+def home():
+    return {
+        "message": "Hello"
+    }
+```
+
+FastAPI automatically includes:
+
+```text
+GET /
+```
+
+inside:
+
+```text
+/openapi.json
+```
+
+Swagger UI and ReDoc use this information to build their interfaces.
+
+---
+
+# What Is ReDoc?
+
+ReDoc is another documentation interface generated by FastAPI.
+
+It is available at:
+
+```text
+http://127.0.0.1:8000/redoc
+```
+
+---
+
+# Swagger UI vs ReDoc
+
+Both tools use the same OpenAPI data.
+
+The difference is mainly presentation.
+
+---
+
+## Swagger UI
+
+Strengths:
+
+- Interactive testing
+- Execute requests
+- Great for development
+- Easy experimentation
+
+Most developers use Swagger during development.
+
+---
+
+## ReDoc
+
+Strengths:
+
+- Cleaner design
+- Better reading experience
+- Professional appearance
+- Excellent for public APIs
+
+Many companies publish ReDoc documentation for external developers.
+
+---
+
+# Visual Comparison
+
+---
+
+## Swagger UI
+
+```text
+Interactive
+
+GET /
+POST /users
+DELETE /users/1
+
+[Try It Out]
+```
+
+Focus:
+
+```text
+Testing APIs
+```
+
+---
+
+## ReDoc
+
+```text
+Beautiful Documentation
+
+Introduction
+Authentication
+Endpoints
+Examples
+```
+
+Focus:
+
+```text
+Reading Documentation
+```
+
+---
+
+# Exploring Your First API
+
+Suppose your application is:
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "Hello World"
+    }
+```
+
+---
+
+# Running the Server
+
+Start Uvicorn:
+
+```bash
+uvicorn main:app --reload
+```
+
+Output:
+
+```text
+Uvicorn running on http://127.0.0.1:8000
+```
+
+---
+
+# Visiting the Root Endpoint
+
+Open:
+
+```text
+http://127.0.0.1:8000
+```
+
+You should see:
+
+```json
+{
+  "message": "Hello World"
+}
+```
+
+---
+
+# Visiting Swagger UI
+
+Open:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+You should see:
+
+```text
+GET /
+
+Try it out
+Execute
+```
+
+---
+
+# Visiting ReDoc
+
+Open:
+
+```text
+http://127.0.0.1:8000/redoc
+```
+
+You should see a more polished documentation interface.
+
+---
+
+# Adding Another Endpoint
+
+Suppose we add:
+
+```python
+@app.get("/about")
+def about():
+    return {
+        "name": "John",
+        "bio": "Backend Developer"
+    }
+```
+
+---
+
+# What Happens?
+
+Without writing any documentation:
+
+Swagger automatically shows:
+
+```text
+GET /
+
+GET /about
+```
+
+ReDoc also updates automatically.
+
+This is one of FastAPI's most impressive features.
+
+---
+
+# Adding Path Parameters
+
+Suppose we create:
+
+```python
+@app.get("/greet/{name}")
+def greet(name: str):
+    return {
+        "message": f"Hello {name}"
+    }
+```
+
+Swagger now understands:
+
+```text
+Path Parameter:
+name (string)
+```
+
+Users can enter values directly into the interface.
+
+No additional work is required.
+
+---
+
+# Why Automatic Documentation Is Important
+
+Professional software teams rely heavily on documentation.
+
+Automatic generation provides several benefits.
+
+---
+
+## Faster Development
+
+Developers spend less time writing documentation manually.
+
+---
+
+## Fewer Mistakes
+
+Documentation always matches the source code.
+
+There is no risk of outdated examples.
+
+---
+
+## Better Collaboration
+
+Frontend and backend teams can work independently.
+
+---
+
+## Easier Learning
+
+New developers can explore APIs visually.
+
+---
+
+# Real-World Example
+
+Suppose a mobile developer joins your project.
+
+Instead of reading hundreds of lines of Python:
+
+They simply visit:
+
+```text
+/docs
+```
+
+and immediately understand:
+
+```text
+GET /users
+POST /orders
+DELETE /products/{id}
+```
+
+along with:
+
+- Required parameters
+- Example responses
+- Status codes
+
+This dramatically improves productivity.
+
+---
+
+# Best Practices
+
+---
+
+## Always Check `/docs`
+
+Whenever you create a new endpoint, verify that it appears correctly.
+
+---
+
+## Use Descriptive Route Names
+
+Good:
+
+```text
+/users
+/products
+/orders
+```
+
+Bad:
+
+```text
+/x1
+/y2
+/z3
+```
+
+Clear names improve documentation quality.
+
+---
+
+## Explore Both Interfaces
+
+During this sprint, try using:
+
+```text
+/docs
+```
+
+and
+
+```text
+/redoc
+```
+
+to understand their differences.
+
+---
+
+## Use "Try It Out"
+
+Testing directly from Swagger is one of the fastest ways to verify APIs.
+
+---
+
+# The Big Picture
+
+FastAPI generates:
+
+```text
+Python Code
+      ↓
+OpenAPI Specification
+      ↓
+Swagger UI
+      ↓
+ReDoc
+```
+
+All automatically.
+
+This is one of the reasons FastAPI has become so popular among developers.
+
+---
+
+# Summary
+
+By now, you should understand:
+
+- What Swagger UI is
+- What ReDoc is
+- What OpenAPI means
+- Why automatic documentation matters
+- How to use `/docs`
+- How to use `/redoc`
+- How to test endpoints using "Try it out"
+- Why FastAPI documentation improves developer productivity
+
+In the next guide, we will bring everything together and build our first complete FastAPI application, including virtual environments, Uvicorn, API routes, requirements files, and Git best practices.
