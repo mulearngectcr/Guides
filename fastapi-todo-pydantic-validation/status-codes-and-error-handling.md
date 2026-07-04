@@ -354,4 +354,3 @@ By now, you should understand:
 - How to raise a 404 when a todo is not found
 - Why we replace plain message returns with HTTPException
 
-In the next guide, we will build the complete validated Todo API with all of these concepts combined.
